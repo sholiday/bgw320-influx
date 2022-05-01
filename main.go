@@ -15,6 +15,7 @@ import (
 	influxApi "github.com/influxdata/influxdb-client-go/v2/api"
 	influxWrite "github.com/influxdata/influxdb-client-go/v2/api/write"
 	"github.com/kelseyhightower/envconfig"
+	_ "net/http/pprof"
 )
 
 type Specification struct {
@@ -134,6 +135,9 @@ func (a *App) Run() error {
 
 func main() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	go func() {
+		http.ListenAndServe(":6060", nil)
+	}()
 
 	var s Specification
 	err := envconfig.Process("BGW320", &s)

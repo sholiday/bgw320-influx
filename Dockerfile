@@ -14,7 +14,7 @@ COPY . ./
 
 WORKDIR /app/
 # Build the binary.
-RUN go build -v -o main
+RUN go build -v -o bgw320-influx
 
 # Use the official Debian slim image for a lean production container.
 # https://hub.docker.com/_/debian
@@ -25,7 +25,8 @@ RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -
     rm -rf /var/lib/apt/lists/*
 
 # Copy the binary to the production image from the builder stage.
-COPY --from=builder /app/main /app/main
+COPY --from=builder /app/bgw320-influx /app/bgw320-influx
 
-# Run the web service on container startup.
-CMD ["/app/main"]
+EXPOSE 6060/tcp
+
+CMD ["/app/bgw320-influx"]
