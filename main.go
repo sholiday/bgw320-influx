@@ -155,9 +155,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	ticker := time.NewTicker(5 * time.Second)
 	for {
 		select {
-		case <-time.Tick(5 * time.Second):
+		case <-ticker.C:
 			err := app.Run()
 			if err != nil {
 				log.Printf("Failed to submit data: %s", err)
